@@ -13,8 +13,6 @@ Flutter.
   headband, helmet, whistle, clock, bag).
 - Each bird's rhythm comes from its `id`, so two birds never blink in step and
   the same bird looks the same on every run.
-- A flock of thousands is drawn in one canvas: big birds live, smaller ones
-  as sprites, the smallest as dots.
 - Honours reduced motion and `TickerMode`; every bird has a semantic label.
 
 ## Install
@@ -48,8 +46,8 @@ DashStage(
 )
 ```
 
-Without `seconds` the bird is a still picture, which is what you want in a
-list of hundreds of rows.
+Put one stage above all the birds of a screen rather than one per bird.
+Without `seconds` a bird is a still picture.
 
 ### Colours
 
@@ -86,76 +84,10 @@ DashView(
 )
 ```
 
-## A flock
-
-`DashFlockView` draws every bird in one `CustomPaint`. Positions and sizes are
-in scene units; a `DashCamera` says which part of the scene is on screen.
-Birds that share a `spriteKey` share one sprite when drawn small.
-
-```dart
-class _FlockState extends State<Flock> with SingleTickerProviderStateMixin {
-  late final DashCameraController _camera = DashCameraController(this);
-
-  @override
-  void dispose() {
-    _camera.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = DashPalette.of(context);
-    final birds = [
-      for (var i = 0; i < 400; i++)
-        DashFlockBird(
-          id: 'bird-$i',
-          position: Offset((i % 25 + 0.5) * 64, (i ~/ 25 + 0.5) * 64),
-          size: 56,
-          look: DashLook.fromBody(palette.bodies[i % 9], palette: palette),
-          spriteKey: 'body-${i % 9}',
-        ),
-    ];
-    return DashCameraGestures(
-      controller: _camera,
-      scene: const Rect.fromLTWH(0, 0, 1600, 1024),
-      child: DashStage(
-        builder: (context, seconds) => DashFlockView(
-          birds: birds,
-          seconds: seconds,
-          camera: _camera,
-          semanticLabel: 'A flock of 400 birds',
-          onBirdTap: (i) => _camera.focus(birds[i].position),
-        ),
-      ),
-    );
-  }
-}
-```
-
-`DashCameraGestures` pans with a drag or trackpad and zooms with the wheel or
-a pinch. With keyboard focus, `+` and `-` zoom, `0` shows the whole scene and
-the arrows pan.
-
-To move the birds, implement `DashFlockMotion`: it writes an offset per bird
-for a given second. `DashFlockScaling`, `DashFlockFacing` and
-`DashFlockPosing` add size, direction and pose.
-
-## Scenes
-
-- `DashMeadowView` puts a flock on a meadow of fields, a pond, paths, trees
-  and flowers described by a `DashMeadowTerrain`.
-- `DashPlanetView` draws a dotted globe you can turn by dragging, with birds
-  as dots on its continents.
-- `DashFlockFlight` flies a flock from one set of screen positions to another,
-  driven by a route's animation.
-- `DashWiresPainter` draws wires for the birds to sit on.
-
-Ground colours come from `DashTerrain`, a theme extension like `DashPalette`.
-
 ## Example
 
 The [example](example/lib/main.dart) shows one bird with every pose, accessory
-and facing, and a flock of 400 with a camera:
+and facing, and two dozen more, each with its own colour and rhythm:
 
 ```sh
 cd example

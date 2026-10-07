@@ -41,15 +41,13 @@ void main() {
     }
   });
 
-  testWidgets('the palette and terrain follow the theme', (tester) async {
+  testWidgets('the palette follows the theme', (tester) async {
     late DashPalette palette;
-    late DashTerrain terrain;
     Widget app(ThemeData theme) => MaterialApp(
       theme: theme,
       home: Builder(
         builder: (context) {
           palette = DashPalette.of(context);
-          terrain = DashTerrain.of(context);
           return const SizedBox();
         },
       ),
@@ -57,12 +55,10 @@ void main() {
 
     await tester.pumpWidget(app(ThemeData.dark()));
     expect(palette, same(DashPalette.dark));
-    expect(terrain, same(DashTerrain.dark));
 
     final mine = DashPalette.light.copyWith(belly: const Color(0xFFFFF7E0));
     await tester.pumpWidget(app(ThemeData.light().copyWith(extensions: [mine])));
     await tester.pumpAndSettle();
     expect(palette.belly, mine.belly);
-    expect(terrain, same(DashTerrain.light));
   });
 }

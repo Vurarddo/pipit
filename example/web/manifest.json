@@ -1,6 +1,6 @@
 {
-    "name": "dash_bird_example",
-    "short_name": "dash_bird_example",
+    "name": "pipit_example",
+    "short_name": "pipit_example",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

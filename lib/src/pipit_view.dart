@@ -1,52 +1,52 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dash_bird/src/dash_accessory.dart';
-import 'package:dash_bird/src/dash_expression.dart';
-import 'package:dash_bird/src/dash_facing.dart';
-import 'package:dash_bird/src/dash_look.dart';
-import 'package:dash_bird/src/dash_motion.dart';
-import 'package:dash_bird/src/dash_painter.dart';
-import 'package:dash_bird/src/dash_pose.dart';
-import 'package:dash_bird/src/dash_pose_transition.dart';
-import 'package:dash_bird/src/dash_reactions.dart';
-import 'package:dash_bird/src/dash_stage.dart';
+import 'package:pipit/src/pipit_accessory.dart';
+import 'package:pipit/src/pipit_expression.dart';
+import 'package:pipit/src/pipit_facing.dart';
+import 'package:pipit/src/pipit_look.dart';
+import 'package:pipit/src/pipit_motion.dart';
+import 'package:pipit/src/pipit_painter.dart';
+import 'package:pipit/src/pipit_pose.dart';
+import 'package:pipit/src/pipit_pose_transition.dart';
+import 'package:pipit/src/pipit_reactions.dart';
+import 'package:pipit/src/pipit_stage.dart';
 
 /// One living bird. [id] decides its rhythm, so two birds never breathe or
-/// blink in step; [seconds] is the clock of the surrounding [DashStage], or
+/// blink in step; [seconds] is the clock of the surrounding [PipitStage], or
 /// `null` for a bird at rest. A new [pose] or [expression] is reached along
 /// a spring from wherever the bird is, never by a cut. On a stage the bird
 /// looks at the pointer and hops when it arrives; with [onTap] it squashes
 /// when tapped.
-class const DashView({
+class const PipitView({
   super.key,
   required final String id,
-  required final DashLook look,
+  required final PipitLook look,
   required final String semanticLabel,
   final ValueListenable<double>? seconds,
   final double size = 96,
-  final DashFacing facing = DashFacing.front,
-  final DashAccessory accessory = DashAccessory.none,
-  final DashPose pose = DashPose.standing,
-  final DashExpression expression = DashExpression.calm,
+  final PipitFacing facing = PipitFacing.front,
+  final PipitAccessory accessory = PipitAccessory.none,
+  final PipitPose pose = PipitPose.standing,
+  final PipitExpression expression = PipitExpression.calm,
   final VoidCallback? onTap,
 }) extends StatefulWidget {
   @override
-  State<DashView> createState() => _DashViewState();
+  State<PipitView> createState() => _PipitViewState();
 }
 
-class _DashViewState extends State<DashView> {
-  late final DashPoseTransition _transition = DashPoseTransition(_target());
-  final DashReactions _reactions = DashReactions();
-  late DashIdle _idle = DashIdle(widget.id);
+class _PipitViewState extends State<PipitView> {
+  late final PipitPoseTransition _transition = PipitPoseTransition(_target());
+  final PipitReactions _reactions = PipitReactions();
+  late PipitIdle _idle = PipitIdle(widget.id);
   ValueListenable<Offset?>? _pointer;
   Offset _follow = Offset.zero;
 
   double get _now => widget.seconds?.value ?? double.infinity;
 
-  DashPoseValues _target() => DashPoseValues.of(
+  PipitPoseValues _target() => PipitPoseValues.of(
     widget.pose,
-    DashExpression(
+    PipitExpression(
       eyes: widget.expression.eyes,
       look: widget.expression.look + _follow,
       mood: widget.expression.mood,
@@ -56,16 +56,16 @@ class _DashViewState extends State<DashView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final pointer = DashStage.pointerOf(context);
+    final pointer = PipitStage.pointerOf(context);
     if (pointer == _pointer) return;
     _pointer?.removeListener(_onPointer);
     _pointer = pointer?..addListener(_onPointer);
   }
 
   @override
-  void didUpdateWidget(DashView old) {
+  void didUpdateWidget(PipitView old) {
     super.didUpdateWidget(old);
-    if (old.id != widget.id) _idle = DashIdle(widget.id);
+    if (old.id != widget.id) _idle = PipitIdle(widget.id);
     if (old.pose != widget.pose || old.expression != widget.expression) {
       _transition.retarget(_target(), _now);
     }
@@ -114,7 +114,7 @@ class _DashViewState extends State<DashView> {
           child: RepaintBoundary(
             child: CustomPaint(
               size: Size.square(widget.size),
-              painter: DashPainter(
+              painter: PipitPainter(
                 look: widget.look,
                 idle: _idle,
                 transition: _transition,

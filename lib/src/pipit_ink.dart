@@ -1,23 +1,23 @@
 import 'package:flutter/painting.dart';
 
-import 'package:dash_bird/src/dash_geometry.dart';
-import 'package:dash_bird/src/dash_look.dart';
-import 'package:dash_bird/src/dash_motion.dart';
+import 'package:pipit/src/pipit_geometry.dart';
+import 'package:pipit/src/pipit_look.dart';
+import 'package:pipit/src/pipit_motion.dart';
 
 /// The pens every view draws with: one fill and one outline `Paint`, and the
 /// parts all views share (feet, head feathers, tuft), so a frame allocates
 /// nothing and the views cannot drift apart.
-class DashInk {
+class PipitInk {
   final Paint _fill = Paint()..isAntiAlias = true;
   final Paint _stroke = Paint()
     ..style = PaintingStyle.stroke
-    ..strokeWidth = DashGeometry.outline
+    ..strokeWidth = PipitGeometry.outline
     ..strokeJoin = StrokeJoin.round
     ..strokeCap = StrokeCap.round;
 
-  final Path body = DashGeometry.bodyPath();
+  final Path body = PipitGeometry.bodyPath();
 
-  void begin(DashLook look) => _stroke.color = look.outline;
+  void begin(PipitLook look) => _stroke.color = look.outline;
 
   void fill(Canvas canvas, Path path, Color color) {
     _fill.color = color;
@@ -48,13 +48,13 @@ class DashInk {
   }
 
   /// A stroke in [color] and [width], then the pen back to the outline.
-  void line(Canvas canvas, Offset a, Offset b, Color color, double width, DashLook look) {
+  void line(Canvas canvas, Offset a, Offset b, Color color, double width, PipitLook look) {
     _stroke
       ..strokeWidth = width
       ..color = color;
     canvas.drawLine(a, b, _stroke);
     _stroke
-      ..strokeWidth = DashGeometry.outline
+      ..strokeWidth = PipitGeometry.outline
       ..color = look.outline;
   }
 
@@ -66,13 +66,13 @@ class DashInk {
   void trace(Canvas canvas, Path path) => canvas.drawPath(path, _stroke);
 
   /// The two round feathers at the sides of the head; [sides] picks which.
-  void headFeathers(Canvas canvas, DashLook look, List<double> sides) {
+  void headFeathers(Canvas canvas, PipitLook look, List<double> sides) {
     for (final side in sides) {
       oval(
         canvas,
         Rect.fromCircle(
-          center: DashGeometry.headFeather.scale(side, 1),
-          radius: DashGeometry.headFeatherRadius,
+          center: PipitGeometry.headFeather.scale(side, 1),
+          radius: PipitGeometry.headFeatherRadius,
         ),
         look.wing,
       );
@@ -83,21 +83,21 @@ class DashInk {
   /// [raise] lifts them (0..1) when the bird is alert.
   void tuft(
     Canvas canvas,
-    DashLook look, {
+    PipitLook look, {
     double shiftX = 0,
     double lean = 0,
     double raise = 0,
   }) {
-    for (final (center, angle) in DashGeometry.tuft) {
+    for (final (center, angle) in PipitGeometry.tuft) {
       canvas.save();
-      canvas.translate(center.dx + shiftX, center.dy - raise * DashGeometry.tuftRaise);
+      canvas.translate(center.dx + shiftX, center.dy - raise * PipitGeometry.tuftRaise);
       canvas.rotate(angle + lean);
       oval(
         canvas,
         Rect.fromCenter(
           center: Offset.zero,
-          width: DashGeometry.tuftFeather.width,
-          height: DashGeometry.tuftFeather.height,
+          width: PipitGeometry.tuftFeather.width,
+          height: PipitGeometry.tuftFeather.height,
         ),
         look.wing,
       );
@@ -108,13 +108,13 @@ class DashInk {
   /// The body's place for this frame: lowered by a crouch, lifted, tilted
   /// around its centre, then breathing, a slight vertical stretch that keeps
   /// the feet on the ground.
-  static void pose(Canvas canvas, DashMotion motion) {
+  static void pose(Canvas canvas, PipitMotion motion) {
     // A squash flattens the bird onto its feet, not around its centre, and
     // widens it by half as much, which keeps the beak inside the bounds.
-    canvas.translate(0, DashGeometry.groundY);
+    canvas.translate(0, PipitGeometry.groundY);
     canvas.scale(1 + motion.squash / 2, 1 - motion.squash);
-    canvas.translate(0, -DashGeometry.groundY);
-    canvas.translate(0, motion.crouch * DashGeometry.crouchDrop - motion.lift);
+    canvas.translate(0, -PipitGeometry.groundY);
+    canvas.translate(0, motion.crouch * PipitGeometry.crouchDrop - motion.lift);
     canvas.rotate(motion.tilt);
     canvas.translate(0, -0.008 * motion.breath);
     canvas.scale(1 - 0.01 * motion.breath, 1 + 0.016 * motion.breath);

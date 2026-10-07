@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 /// The colours birds are made of. [bodies] are ready body colours to pick
 /// from; everything else is shared by every bird, so a flock reads as one
 /// family. Wing, eye mask and outline are derived from the body
-/// (`DashLook.fromBody`), so a bird's colours can never clash.
+/// (`PipitLook.fromBody`), so a bird's colours can never clash.
 ///
 /// Add one to `ThemeData.extensions` to restyle every bird below it; without
 /// one, [of] follows the theme's brightness.
 @immutable
-class const DashPalette({
+class const PipitPalette({
   required final List<Color> bodies,
   required final Color belly,
   required final Color beak,
@@ -18,8 +18,8 @@ class const DashPalette({
   required final Color metal,
   required final Color leather,
   final Color? ink,
-}) extends ThemeExtension<DashPalette> {
-  static const DashPalette dark = DashPalette(
+}) extends ThemeExtension<PipitPalette> {
+  static const PipitPalette dark = PipitPalette(
     bodies: [
       Color(0xFF5AA9FF),
       Color(0xFFA07BFF),
@@ -42,7 +42,7 @@ class const DashPalette({
 
   /// On a light ground every bird is outlined in [ink]; on a dark one the
   /// outline is a deep shade of the bird's own body.
-  static const DashPalette light = DashPalette(
+  static const PipitPalette light = PipitPalette(
     bodies: [
       Color(0xFF2563EB),
       Color(0xFF7C3AED),
@@ -65,13 +65,13 @@ class const DashPalette({
   );
 
   /// The theme's palette, or [light] / [dark] by the theme's brightness.
-  static DashPalette of(BuildContext context) {
+  static PipitPalette of(BuildContext context) {
     final theme = Theme.of(context);
-    return theme.extension<DashPalette>() ?? (theme.brightness == Brightness.dark ? dark : light);
+    return theme.extension<PipitPalette>() ?? (theme.brightness == Brightness.dark ? dark : light);
   }
 
   @override
-  DashPalette copyWith({
+  PipitPalette copyWith({
     List<Color>? bodies,
     Color? belly,
     Color? beak,
@@ -82,7 +82,7 @@ class const DashPalette({
     Color? leather,
     Color? ink,
   }) {
-    return DashPalette(
+    return PipitPalette(
       bodies: bodies ?? this.bodies,
       belly: belly ?? this.belly,
       beak: beak ?? this.beak,
@@ -96,9 +96,9 @@ class const DashPalette({
   }
 
   @override
-  DashPalette lerp(ThemeExtension<DashPalette>? other, double t) {
-    if (other is! DashPalette) return this;
-    return DashPalette(
+  PipitPalette lerp(ThemeExtension<PipitPalette>? other, double t) {
+    if (other is! PipitPalette) return this;
+    return PipitPalette(
       bodies: bodies.length == other.bodies.length
           ? [for (var i = 0; i < bodies.length; i++) Color.lerp(bodies[i], other.bodies[i], t)!]
           : (t < 0.5 ? bodies : other.bodies),

@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 
-import 'package:dash_bird/src/dash_palette.dart';
-import 'package:dash_bird/src/stable_hash.dart';
+import 'package:pipit/src/pipit_palette.dart';
+import 'package:pipit/src/stable_hash.dart';
 
 /// The colours of one bird. Build one from a single body colour with
-/// [DashLook.fromBody], let [DashLook.of] pick a body by the bird's id, or
+/// [PipitLook.fromBody], let [PipitLook.of] pick a body by the bird's id, or
 /// name every colour yourself.
 @immutable
-class const DashLook({
+class const PipitLook({
   required final Color body,
   required final Color wing,
   required final Color belly,
@@ -24,7 +24,7 @@ class const DashLook({
 }) {
   /// A whole look from one [body] colour: wing, mask and outline follow it,
   /// the rest comes from [palette].
-  factory DashLook.fromBody(Color body, {DashPalette palette = DashPalette.light}) => DashLook(
+  factory PipitLook.fromBody(Color body, {PipitPalette palette = PipitPalette.light}) => PipitLook(
     body: body,
     wing: Color.lerp(body, palette.pupil, 0.22)!,
     belly: palette.belly,
@@ -41,15 +41,16 @@ class const DashLook({
 
   /// The look of the bird called [id]: one of the palette's bodies, always
   /// the same one for the same id, so adding a bird repaints no other.
-  factory DashLook.of(String id, {DashPalette palette = DashPalette.light}) => DashLook.fromBody(
-    palette.bodies[StableHash.seed(id) % palette.bodies.length],
-    palette: palette,
-  );
+  factory PipitLook.of(String id, {PipitPalette palette = PipitPalette.light}) =>
+      PipitLook.fromBody(
+        palette.bodies[StableHash.seed(id) % palette.bodies.length],
+        palette: palette,
+      );
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DashLook &&
+      other is PipitLook &&
           other.body == body &&
           other.wing == wing &&
           other.belly == belly &&

@@ -1,8 +1,8 @@
 import 'package:flutter/painting.dart';
 
-/// Where each accessory sits, in the body units of `DashGeometry`. Side view
+/// Where each accessory sits, in the body units of `PipitGeometry`. Side view
 /// numbers are for a bird looking left; the back view mirrors the front.
-abstract final class DashGearGeometry {
+abstract final class PipitGearGeometry {
   // Crown: a band with three points, in front of the tuft's base.
   static const double crownBaseY = -0.42;
   static const double crownTopY = -0.72;

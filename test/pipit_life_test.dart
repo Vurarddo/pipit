@@ -7,14 +7,14 @@ import 'package:flutter/rendering.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:dash_bird/src/dash_look.dart';
-import 'package:dash_bird/src/dash_motion.dart';
-import 'package:dash_bird/src/dash_palette.dart';
-import 'package:dash_bird/src/dash_reactions.dart';
-import 'package:dash_bird/src/dash_stage.dart';
-import 'package:dash_bird/src/dash_view.dart';
+import 'package:pipit/src/pipit_look.dart';
+import 'package:pipit/src/pipit_motion.dart';
+import 'package:pipit/src/pipit_palette.dart';
+import 'package:pipit/src/pipit_reactions.dart';
+import 'package:pipit/src/pipit_stage.dart';
+import 'package:pipit/src/pipit_view.dart';
 
-List<double> _blinkStarts(DashIdle idle) {
+List<double> _blinkStarts(PipitIdle idle) {
   final starts = <double>[];
   var closed = false;
   for (var t = 0.0; t < 300; t += 1 / 60) {
@@ -27,7 +27,7 @@ List<double> _blinkStarts(DashIdle idle) {
 
 void main() {
   group('a flock of 20 never moves in step', () {
-    final birds = [for (var i = 0; i < 20; i++) DashIdle('skill-$i')];
+    final birds = [for (var i = 0; i < 20; i++) PipitIdle('skill-$i')];
 
     test('breathing drifts apart for every pair', () {
       for (var a = 0; a < birds.length; a++) {
@@ -57,7 +57,7 @@ void main() {
     });
 
     test('each bird twitches a wing now and then, at its own moments', () {
-      List<double> twitches(DashIdle idle) => [
+      List<double> twitches(PipitIdle idle) => [
         for (var t = 0.0; t < 30; t += 1 / 60)
           if (idle.at(t).wing > 0.12) t,
       ];
@@ -71,17 +71,17 @@ void main() {
 
   group('reactions', () {
     test('a hop rises and flutters, then lands', () {
-      final reactions = DashReactions()..hop(1);
-      final peak = reactions.apply(const DashMotion(), 1.175);
+      final reactions = PipitReactions()..hop(1);
+      final peak = reactions.apply(const PipitMotion(), 1.175);
       expect(peak.lift, greaterThan(0.04));
-      expect(reactions.apply(const DashMotion(), 1.4).lift, 0);
-      expect(reactions.apply(const DashMotion(), 0.9).lift, 0);
+      expect(reactions.apply(const PipitMotion(), 1.4).lift, 0);
+      expect(reactions.apply(const PipitMotion(), 0.9).lift, 0);
     });
 
     test('a squash dips and comes back', () {
-      final reactions = DashReactions()..squash(2);
-      expect(reactions.apply(const DashMotion(), 2.1).squash, greaterThan(0.05));
-      expect(reactions.apply(const DashMotion(), 2.4).squash, 0);
+      final reactions = PipitReactions()..squash(2);
+      expect(reactions.apply(const PipitMotion(), 2.1).squash, greaterThan(0.05));
+      expect(reactions.apply(const PipitMotion(), 2.4).squash, 0);
     });
   });
 
@@ -89,7 +89,7 @@ void main() {
     await tester.pumpWidget(
       TickerMode(
         enabled: false,
-        child: DashStage(builder: (context, seconds) => const SizedBox()),
+        child: PipitStage(builder: (context, seconds) => const SizedBox()),
       ),
     );
     await tester.pump(const Duration(seconds: 1));
@@ -98,14 +98,20 @@ void main() {
 
   testWidgets('eyes follow the pointer across the stage', (tester) async {
     final key = GlobalKey();
-    final look = DashLook.fromBody(DashPalette.light.bodies.first, palette: DashPalette.light);
+    final look = PipitLook.fromBody(PipitPalette.light.bodies.first, palette: PipitPalette.light);
     await tester.pumpWidget(
       MaterialApp(
-        home: DashStage(
+        home: PipitStage(
           builder: (context, seconds) => Center(
             child: RepaintBoundary(
               key: key,
-              child: DashView(id: 'a', look: look, semanticLabel: 'a', seconds: seconds, size: 120),
+              child: PipitView(
+                id: 'a',
+                look: look,
+                semanticLabel: 'a',
+                seconds: seconds,
+                size: 120,
+              ),
             ),
           ),
         ),

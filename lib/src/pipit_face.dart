@@ -1,23 +1,23 @@
 import 'package:flutter/painting.dart';
 
-import 'package:dash_bird/src/dash_geometry.dart';
-import 'package:dash_bird/src/dash_ink.dart';
-import 'package:dash_bird/src/dash_look.dart';
-import 'package:dash_bird/src/dash_motion.dart';
+import 'package:pipit/src/pipit_geometry.dart';
+import 'package:pipit/src/pipit_ink.dart';
+import 'package:pipit/src/pipit_look.dart';
+import 'package:pipit/src/pipit_motion.dart';
 
-typedef _G = DashGeometry;
+typedef _G = PipitGeometry;
 
 /// One eye with its expression: open or shut, widened, looking somewhere,
 /// squinting when happy, under a raised brow when worried. The front view
 /// draws two, the side view one.
-class DashFace(final DashInk _ink) {
+class PipitFace(final PipitInk _ink) {
   /// [side] is -1 for the bird's right eye (on the viewer's left), 1 for its
   /// left, 0 for the single eye of the side view; it mirrors the brow.
   /// [eyeSize] is the white of the eye; the front view's is round.
   void eye(
     Canvas canvas,
-    DashLook look,
-    DashMotion motion,
+    PipitLook look,
+    PipitMotion motion,
     Offset center,
     double side, {
     Size eyeSize = const Size(_G.eyeRadius * 2, _G.eyeRadius * 2),
@@ -59,7 +59,7 @@ class DashFace(final DashInk _ink) {
     canvas.restore();
   }
 
-  void _brow(Canvas canvas, DashLook look, double side, double worry) {
+  void _brow(Canvas canvas, PipitLook look, double side, double worry) {
     // Brows are drawn for the eye on the right; the other eye and the side
     // view (which looks left) mirror them.
     final mirror = side == 0 ? -1.0 : side;

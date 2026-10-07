@@ -1,30 +1,30 @@
 import 'package:flutter/painting.dart';
 
-import 'package:dash_bird/src/dash_accessories.dart';
-import 'package:dash_bird/src/dash_accessory.dart';
-import 'package:dash_bird/src/dash_face.dart';
-import 'package:dash_bird/src/dash_facing.dart';
-import 'package:dash_bird/src/dash_feet.dart';
-import 'package:dash_bird/src/dash_geometry.dart';
-import 'package:dash_bird/src/dash_ink.dart';
-import 'package:dash_bird/src/dash_look.dart';
-import 'package:dash_bird/src/dash_motion.dart';
+import 'package:pipit/src/pipit_accessories.dart';
+import 'package:pipit/src/pipit_accessory.dart';
+import 'package:pipit/src/pipit_face.dart';
+import 'package:pipit/src/pipit_facing.dart';
+import 'package:pipit/src/pipit_feet.dart';
+import 'package:pipit/src/pipit_geometry.dart';
+import 'package:pipit/src/pipit_ink.dart';
+import 'package:pipit/src/pipit_look.dart';
+import 'package:pipit/src/pipit_motion.dart';
 
-typedef _G = DashGeometry;
+typedef _G = PipitGeometry;
 
 /// Left side view: one eye and the beak forward, one wing on the body.
-class DashSideView(final DashInk _ink, final DashAccessories _accessories) {
-  this : _feet = DashFeet(_ink), _face = DashFace(_ink);
+class PipitSideView(final PipitInk _ink, final PipitAccessories _accessories) {
+  this : _feet = PipitFeet(_ink), _face = PipitFace(_ink);
 
-  final DashFeet _feet;
-  final DashFace _face;
+  final PipitFeet _feet;
+  final PipitFace _face;
   final Path _wing = _G.sideWingPath();
   final Path _beak = _G.sideBeakPath();
 
-  void paint(Canvas canvas, DashLook look, DashMotion motion, DashAccessory accessory) {
+  void paint(Canvas canvas, PipitLook look, PipitMotion motion, PipitAccessory accessory) {
     _feet.paint(canvas, look, motion, _G.sideLegs, profile: true);
     canvas.save();
-    DashInk.pose(canvas, motion);
+    PipitInk.pose(canvas, motion);
     _ink.headFeathers(canvas, look, const [1]);
     _ink.tuft(canvas, look, shiftX: _G.sideTuftShift, lean: _G.sideTuftLean, raise: motion.tuft);
     _ink.fill(canvas, _ink.body, look.body);
@@ -46,7 +46,7 @@ class DashSideView(final DashInk _ink, final DashAccessories _accessories) {
     _ink.fill(canvas, _wing, look.wing);
     canvas.restore();
     _ink.fill(canvas, _beak, look.beak);
-    _accessories.paint(canvas, look, accessory, DashFacing.left);
+    _accessories.paint(canvas, look, accessory, PipitFacing.left);
     canvas.restore();
   }
 }

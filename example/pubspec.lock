@@ -17,13 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
-  dash_bird:
-    dependency: "direct main"
-    description:
-      path: ".."
-      relative: true
-    source: path
-    version: "0.1.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -61,6 +54,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.3"
+  pipit:
+    dependency: "direct main"
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "0.1.0"
   sky_engine:
     dependency: transitive
     description: flutter

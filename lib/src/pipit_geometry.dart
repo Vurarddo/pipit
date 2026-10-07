@@ -4,7 +4,7 @@ import 'package:flutter/painting.dart';
 /// the body is a circle of diameter 1 around the origin, y grows downwards,
 /// the side view looks to the left. Every view reads these numbers, so one
 /// change reshapes the bird in all of them.
-abstract final class DashGeometry {
+abstract final class PipitGeometry {
   static const double bodyRadius = 0.5;
   static const double outline = 0.022;
 

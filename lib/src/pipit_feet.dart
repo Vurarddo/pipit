@@ -1,21 +1,21 @@
 import 'package:flutter/painting.dart';
 
-import 'package:dash_bird/src/dash_geometry.dart';
-import 'package:dash_bird/src/dash_ink.dart';
-import 'package:dash_bird/src/dash_look.dart';
-import 'package:dash_bird/src/dash_motion.dart';
+import 'package:pipit/src/pipit_geometry.dart';
+import 'package:pipit/src/pipit_ink.dart';
+import 'package:pipit/src/pipit_look.dart';
+import 'package:pipit/src/pipit_motion.dart';
 
-typedef _G = DashGeometry;
+typedef _G = PipitGeometry;
 
 /// Legs and toes. The toes stay on the ground unless a step lifts them; a
 /// crouch lowers the body onto them, and the legs shorten under it.
-class DashFeet(final DashInk _ink) {
+class PipitFeet(final PipitInk _ink) {
   /// [legs] are x positions, left to right; in [profile] each foot is one long
   /// toe pointing forward (left), as the side view sees it.
   void paint(
     Canvas canvas,
-    DashLook look,
-    DashMotion motion,
+    PipitLook look,
+    PipitMotion motion,
     List<double> legs, {
     bool profile = false,
   }) {
@@ -35,7 +35,7 @@ class DashFeet(final DashInk _ink) {
     }
   }
 
-  void _toe(Canvas canvas, DashLook look, Offset center, Size size) => _ink.oval(
+  void _toe(Canvas canvas, PipitLook look, Offset center, Size size) => _ink.oval(
     canvas,
     Rect.fromCenter(center: center, width: size.width, height: size.height),
     look.beak,

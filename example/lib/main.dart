@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:dash_bird/dash_bird.dart';
+import 'package:pipit/pipit.dart';
 
 void main() => runApp(const ExampleApp());
 
@@ -9,7 +9,7 @@ class ExampleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    title: 'dash_bird',
+    title: 'pipit',
     theme: ThemeData(colorSchemeSeed: Colors.blue),
     darkTheme: ThemeData(colorSchemeSeed: Colors.blue, brightness: Brightness.dark),
     home: const ExamplePage(),
@@ -24,51 +24,51 @@ class ExamplePage extends StatefulWidget {
 }
 
 class _ExamplePageState extends State<ExamplePage> {
-  DashPose _pose = DashPose.standing;
-  DashAccessory _accessory = DashAccessory.crown;
-  DashFacing _facing = DashFacing.front;
+  PipitPose _pose = PipitPose.standing;
+  PipitAccessory _accessory = PipitAccessory.crown;
+  PipitFacing _facing = PipitFacing.front;
   double _mood = 0;
 
   @override
   Widget build(BuildContext context) {
-    final palette = DashPalette.of(context);
+    final palette = PipitPalette.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('dash_bird')),
+      appBar: AppBar(title: const Text('pipit')),
       // One stage is one clock: every bird below it reads the same seconds.
-      body: DashStage(
+      body: PipitStage(
         builder: (context, seconds) => ListView(
           padding: const EdgeInsets.all(16),
           children: [
             Center(
-              child: DashView(
+              child: PipitView(
                 id: 'hero',
-                look: DashLook.fromBody(palette.bodies.first, palette: palette),
-                semanticLabel: 'Dash, ${_pose.name}',
+                look: PipitLook.fromBody(palette.bodies.first, palette: palette),
+                semanticLabel: 'Pipit, ${_pose.name}',
                 seconds: seconds,
                 size: 180,
                 pose: _pose,
                 accessory: _accessory,
                 facing: _facing,
-                expression: DashExpression(mood: _mood),
+                expression: PipitExpression(mood: _mood),
                 onTap: () => setState(() => _mood = _mood > 0 ? -1 : 1),
               ),
             ),
-            _Choice(DashPose.values, _pose, (v) => setState(() => _pose = v)),
-            _Choice(DashAccessory.values, _accessory, (v) => setState(() => _accessory = v)),
-            _Choice(DashFacing.values, _facing, (v) => setState(() => _facing = v)),
+            _Choice(PipitPose.values, _pose, (v) => setState(() => _pose = v)),
+            _Choice(PipitAccessory.values, _accessory, (v) => setState(() => _accessory = v)),
+            _Choice(PipitFacing.values, _facing, (v) => setState(() => _facing = v)),
             const Divider(height: 32),
             // Each bird's colour and rhythm come from its id.
             Wrap(
               alignment: WrapAlignment.center,
               children: [
                 for (var i = 0; i < 24; i++)
-                  DashView(
+                  PipitView(
                     id: 'bird-$i',
-                    look: DashLook.of('bird-$i', palette: palette),
+                    look: PipitLook.of('bird-$i', palette: palette),
                     semanticLabel: 'Bird $i',
                     seconds: seconds,
                     size: 72,
-                    accessory: DashAccessory.values[i % DashAccessory.values.length],
+                    accessory: PipitAccessory.values[i % PipitAccessory.values.length],
                   ),
               ],
             ),

@@ -8,20 +8,20 @@ import 'package:flutter/scheduler.dart';
 ///
 /// The ticker comes from this widget's `vsync`, so `TickerMode` (a hidden tab,
 /// a covered route) stops it; reduced motion keeps the birds at rest.
-class const DashStage({
+class const PipitStage({
   super.key,
   required final Widget Function(BuildContext context, ValueListenable<double> seconds) builder,
 }) extends StatefulWidget {
   /// The pointer over the nearest stage, in global coordinates, or `null`
   /// when it is elsewhere (or there is no stage).
   static ValueListenable<Offset?>? pointerOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_DashStageScope>()?.pointer;
+      context.dependOnInheritedWidgetOfExactType<_PipitStageScope>()?.pointer;
 
   @override
-  State<DashStage> createState() => _DashStageState();
+  State<PipitStage> createState() => _PipitStageState();
 }
 
-class _DashStageState extends State<DashStage> with SingleTickerProviderStateMixin {
+class _PipitStageState extends State<PipitStage> with SingleTickerProviderStateMixin {
   final ValueNotifier<double> _seconds = ValueNotifier(0);
   final ValueNotifier<Offset?> _pointer = ValueNotifier(null);
   late final Ticker _ticker = createTicker(
@@ -45,7 +45,7 @@ class _DashStageState extends State<DashStage> with SingleTickerProviderStateMix
   }
 
   @override
-  Widget build(BuildContext context) => _DashStageScope(
+  Widget build(BuildContext context) => _PipitStageScope(
     pointer: _pointer,
     child: MouseRegion(
       opaque: false,
@@ -56,8 +56,10 @@ class _DashStageState extends State<DashStage> with SingleTickerProviderStateMix
   );
 }
 
-class const _DashStageScope({required final ValueListenable<Offset?> pointer, required super.child})
-    extends InheritedWidget {
+class const _PipitStageScope({
+  required final ValueListenable<Offset?> pointer,
+  required super.child,
+}) extends InheritedWidget {
   @override
-  bool updateShouldNotify(_DashStageScope old) => old.pointer != pointer;
+  bool updateShouldNotify(_PipitStageScope old) => old.pointer != pointer;
 }

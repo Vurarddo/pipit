@@ -5,29 +5,29 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:dash_bird/dash_bird.dart';
+import 'package:pipit/pipit.dart';
 
 const _accessories = [
-  DashAccessory.cap,
-  DashAccessory.crown,
-  DashAccessory.headband,
-  DashAccessory.helmet,
-  DashAccessory.whistle,
-  DashAccessory.clock,
-  DashAccessory.bag,
+  PipitAccessory.cap,
+  PipitAccessory.crown,
+  PipitAccessory.headband,
+  PipitAccessory.helmet,
+  PipitAccessory.whistle,
+  PipitAccessory.clock,
+  PipitAccessory.bag,
 ];
 
 const _facings = [
-  DashFacing.front,
-  DashFacing.left,
-  DashFacing.front,
-  DashFacing.right,
-  DashFacing.front,
-  DashFacing.back,
-  DashFacing.front,
+  PipitFacing.front,
+  PipitFacing.left,
+  PipitFacing.front,
+  PipitFacing.right,
+  PipitFacing.front,
+  PipitFacing.back,
+  PipitFacing.front,
 ];
 
-Widget _board(DashPalette palette, Color ground, ValueNotifier<double> seconds) => ColoredBox(
+Widget _board(PipitPalette palette, Color ground, ValueNotifier<double> seconds) => ColoredBox(
   color: ground,
   child: Padding(
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -37,10 +37,10 @@ Widget _board(DashPalette palette, Color ground, ValueNotifier<double> seconds) 
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            for (final (i, pose) in DashPose.values.indexed)
-              DashView(
+            for (final (i, pose) in PipitPose.values.indexed)
+              PipitView(
                 id: 'pose-$i',
-                look: DashLook.fromBody(palette.bodies[i], palette: palette),
+                look: PipitLook.fromBody(palette.bodies[i], palette: palette),
                 semanticLabel: pose.name,
                 seconds: seconds,
                 size: 120,
@@ -52,9 +52,9 @@ Widget _board(DashPalette palette, Color ground, ValueNotifier<double> seconds) 
           mainAxisSize: MainAxisSize.min,
           children: [
             for (final (i, accessory) in _accessories.indexed)
-              DashView(
+              PipitView(
                 id: 'worn-$i',
-                look: DashLook.fromBody(palette.bodies[(i + 3) % 7], palette: palette),
+                look: PipitLook.fromBody(palette.bodies[(i + 3) % 7], palette: palette),
                 semanticLabel: accessory.name,
                 seconds: seconds,
                 size: 120,
@@ -82,8 +82,8 @@ void main() {
         child: RepaintBoundary(
           child: Column(
             children: [
-              _board(DashPalette.light, const Color(0xFFF4F6FA), seconds),
-              _board(DashPalette.dark, const Color(0xFF0F1218), seconds),
+              _board(PipitPalette.light, const Color(0xFFF4F6FA), seconds),
+              _board(PipitPalette.dark, const Color(0xFF0F1218), seconds),
             ],
           ),
         ),
@@ -91,7 +91,7 @@ void main() {
     );
     await expectLater(
       find.byType(RepaintBoundary).first,
-      matchesGoldenFile('../doc/dash_bird.png'),
+      matchesGoldenFile('../doc/pipit.png'),
     );
   });
 }

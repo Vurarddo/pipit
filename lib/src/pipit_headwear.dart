@@ -1,16 +1,16 @@
 import 'package:flutter/painting.dart';
 
-import 'package:dash_bird/src/dash_facing.dart';
-import 'package:dash_bird/src/dash_gear_geometry.dart';
-import 'package:dash_bird/src/dash_geometry.dart';
-import 'package:dash_bird/src/dash_ink.dart';
-import 'package:dash_bird/src/dash_look.dart';
+import 'package:pipit/src/pipit_facing.dart';
+import 'package:pipit/src/pipit_gear_geometry.dart';
+import 'package:pipit/src/pipit_geometry.dart';
+import 'package:pipit/src/pipit_ink.dart';
+import 'package:pipit/src/pipit_look.dart';
 
-typedef _A = DashGearGeometry;
+typedef _A = PipitGearGeometry;
 
 /// What the bird wears on its head: crown, cap with glasses, helmet, band.
 /// [facing] is front, left (the side view) or back; right is left mirrored.
-class DashHeadwear(final DashInk _ink) {
+class PipitHeadwear(final PipitInk _ink) {
   late final Path _crown = Path()
     ..moveTo(-_A.crownHalfWidth, _A.crownBaseY)
     ..lineTo(-_A.crownHalfWidth, _A.crownTopY + 0.04)
@@ -32,15 +32,15 @@ class DashHeadwear(final DashInk _ink) {
     ..addArc(_A.helmetDome, 3.14159, 3.14159)
     ..close();
 
-  void crown(Canvas canvas, DashLook look, DashFacing facing) {
+  void crown(Canvas canvas, PipitLook look, PipitFacing facing) {
     canvas.save();
     canvas.translate(_headShift(facing), 0);
     _ink.fill(canvas, _crown, look.gold);
     canvas.restore();
   }
 
-  void cap(Canvas canvas, DashLook look, DashFacing facing) {
-    if (facing != DashFacing.back) _glasses(canvas, look, facing);
+  void cap(Canvas canvas, PipitLook look, PipitFacing facing) {
+    if (facing != PipitFacing.back) _glasses(canvas, look, facing);
     canvas.save();
     canvas.translate(_headShift(facing), 0);
     final band = Rect.fromCenter(
@@ -55,7 +55,7 @@ class DashHeadwear(final DashInk _ink) {
     canvas.restore();
   }
 
-  void helmet(Canvas canvas, DashLook look, DashFacing facing) {
+  void helmet(Canvas canvas, PipitLook look, PipitFacing facing) {
     canvas.save();
     canvas.translate(_headShift(facing), 0);
     _ink.fill(canvas, _dome, look.metal);
@@ -63,10 +63,10 @@ class DashHeadwear(final DashInk _ink) {
     canvas.restore();
   }
 
-  void headband(Canvas canvas, DashLook look, DashFacing facing) {
+  void headband(Canvas canvas, PipitLook look, PipitFacing facing) {
     _ink.insideBody(canvas, _A.band, look.band, rect: true);
     final knot = switch (facing) {
-      DashFacing.back => Offset(0, _A.bandKnot.dy),
+      PipitFacing.back => Offset(0, _A.bandKnot.dy),
       _ => _A.bandKnot,
     };
     for (final lean in const [-0.5, 0.4]) {
@@ -82,23 +82,23 @@ class DashHeadwear(final DashInk _ink) {
     }
   }
 
-  void _glasses(Canvas canvas, DashLook look, DashFacing facing) {
-    if (facing == DashFacing.left) {
-      _ink.ring(canvas, DashGeometry.sideEye, _A.glassesRadius);
+  void _glasses(Canvas canvas, PipitLook look, PipitFacing facing) {
+    if (facing == PipitFacing.left) {
+      _ink.ring(canvas, PipitGeometry.sideEye, _A.glassesRadius);
       _ink.line(
         canvas,
-        DashGeometry.sideEye.translate(_A.glassesRadius, 0),
+        PipitGeometry.sideEye.translate(_A.glassesRadius, 0),
         _A.sideGlassesArm,
         look.outline,
-        DashGeometry.outline,
+        PipitGeometry.outline,
         look,
       );
       return;
     }
     for (final side in const [-1.0, 1.0]) {
-      _ink.ring(canvas, DashGeometry.eye.scale(side, 1), _A.glassesRadius);
+      _ink.ring(canvas, PipitGeometry.eye.scale(side, 1), _A.glassesRadius);
     }
   }
 
-  double _headShift(DashFacing facing) => facing == DashFacing.left ? _A.sideHeadShift : 0;
+  double _headShift(PipitFacing facing) => facing == PipitFacing.left ? _A.sideHeadShift : 0;
 }

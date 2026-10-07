@@ -3,16 +3,16 @@ import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/painting.dart';
 
-import 'package:dash_bird/src/dash_expression.dart';
-import 'package:dash_bird/src/dash_motion.dart';
+import 'package:pipit/src/pipit_expression.dart';
+import 'package:pipit/src/pipit_motion.dart';
 
 /// What the bird is doing. Where it is (in the air, on a wire) is the scene's
 /// business; a pose only changes the bird's own body.
-enum DashPose { sitting, standing, walking, flying, sleeping, working, alert }
+enum PipitPose { sitting, standing, walking, flying, sleeping, working, alert }
 
 /// A pose and expression as plain numbers, so any two blend (`lerp`) and a
 /// change of pose is a spring between them rather than a cut.
-class const DashPoseValues({
+class const PipitPoseValues({
   final double crouch = 0,
   final double tilt = 0,
   final double spread = 0,
@@ -37,23 +37,28 @@ class const DashPoseValues({
   // The whole bird leans a little toward where it looks.
   static const double _leanToLook = 0.05;
 
-  factory DashPoseValues.of(DashPose pose, [DashExpression expression = DashExpression.calm]) {
+  factory PipitPoseValues.of(PipitPose pose, [PipitExpression expression = PipitExpression.calm]) {
     final base = switch (pose) {
-      DashPose.standing => const DashPoseValues(),
-      DashPose.sitting => const DashPoseValues(crouch: 1),
-      DashPose.walking => const DashPoseValues(step: 1),
-      DashPose.flying => const DashPoseValues(crouch: 1, spread: 0.9, flap: 1),
-      DashPose.sleeping => const DashPoseValues(crouch: 1, lid: 1, tilt: 0.1),
-      DashPose.working => const DashPoseValues(tilt: -0.06, flap: 0.2, lookY: 0.6, eyeScale: 0.95),
-      DashPose.alert => const DashPoseValues(spread: 0.35, eyeScale: 1.18, tuft: 1),
+      PipitPose.standing => const PipitPoseValues(),
+      PipitPose.sitting => const PipitPoseValues(crouch: 1),
+      PipitPose.walking => const PipitPoseValues(step: 1),
+      PipitPose.flying => const PipitPoseValues(crouch: 1, spread: 0.9, flap: 1),
+      PipitPose.sleeping => const PipitPoseValues(crouch: 1, lid: 1, tilt: 0.1),
+      PipitPose.working => const PipitPoseValues(
+        tilt: -0.06,
+        flap: 0.2,
+        lookY: 0.6,
+        eyeScale: 0.95,
+      ),
+      PipitPose.alert => const PipitPoseValues(spread: 0.35, eyeScale: 1.18, tuft: 1),
     };
-    return DashPoseValues(
+    return PipitPoseValues(
       crouch: base.crouch,
       tilt: base.tilt,
       spread: base.spread,
       flap: base.flap,
       step: base.step,
-      lid: expression.eyes == DashEyes.closed ? 1 : base.lid,
+      lid: expression.eyes == PipitEyes.closed ? 1 : base.lid,
       eyeScale: base.eyeScale,
       tuft: base.tuft,
       lookX: (base.lookX + expression.look.dx).clamp(-1, 1),
@@ -62,9 +67,9 @@ class const DashPoseValues({
     );
   }
 
-  static DashPoseValues lerp(DashPoseValues a, DashPoseValues b, double t) {
+  static PipitPoseValues lerp(PipitPoseValues a, PipitPoseValues b, double t) {
     double mix(double x, double y) => lerpDouble(x, y, t)!;
-    return DashPoseValues(
+    return PipitPoseValues(
       crouch: mix(a.crouch, b.crouch),
       tilt: mix(a.tilt, b.tilt),
       spread: mix(a.spread, b.spread),
@@ -81,11 +86,11 @@ class const DashPoseValues({
 
   /// The motion to paint at [seconds]: these values over the bird's idle life.
   /// [blink] lets the idle blinks through; open or shut eyes hold still.
-  DashMotion over(DashMotion idle, double seconds, double phase, {required bool blink}) {
+  PipitMotion over(PipitMotion idle, double seconds, double phase, {required bool blink}) {
     final walk = math.sin(seconds * _walkRate + phase);
     final beat = math.sin(seconds * _flapRate + phase);
     final eyes = (blink ? idle.eyeOpen : 1.0).clamp(0.0, 1.0);
-    return DashMotion(
+    return PipitMotion(
       breath: idle.breath * (1 - flap * 0.7),
       eyeOpen: math.min(eyes, 1 - lid * 0.92),
       wing: idle.wing * (1 - flap) + spread * _spreadAngle + flap * _flapReach * beat,

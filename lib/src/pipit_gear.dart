@@ -1,22 +1,27 @@
 import 'package:flutter/painting.dart';
 
-import 'package:dash_bird/src/dash_facing.dart';
-import 'package:dash_bird/src/dash_gear_geometry.dart';
-import 'package:dash_bird/src/dash_ink.dart';
-import 'package:dash_bird/src/dash_look.dart';
+import 'package:pipit/src/pipit_facing.dart';
+import 'package:pipit/src/pipit_gear_geometry.dart';
+import 'package:pipit/src/pipit_ink.dart';
+import 'package:pipit/src/pipit_look.dart';
 
-typedef _A = DashGearGeometry;
+typedef _A = PipitGearGeometry;
 
 /// What the bird carries: a whistle, an alarm clock, a messenger bag. The
 /// back view mirrors the front, since the bird is seen from behind.
-class DashGear(final DashInk _ink) {
-  void whistle(Canvas canvas, DashLook look, DashFacing facing) {
-    final at = facing == DashFacing.left ? _A.sideWhistle : _A.whistle;
+class PipitGear(final PipitInk _ink) {
+  void whistle(Canvas canvas, PipitLook look, PipitFacing facing) {
+    final at = facing == PipitFacing.left ? _A.sideWhistle : _A.whistle;
     final cord = Path()
       ..moveTo(-_A.cordSpread, _A.cordTopY)
-      ..quadraticBezierTo(at.dx, facing == DashFacing.back ? 0 : at.dy, _A.cordSpread, _A.cordTopY);
+      ..quadraticBezierTo(
+        at.dx,
+        facing == PipitFacing.back ? 0 : at.dy,
+        _A.cordSpread,
+        _A.cordTopY,
+      );
     _ink.trace(canvas, cord);
-    if (facing == DashFacing.back) return;
+    if (facing == PipitFacing.back) return;
     final body = RRect.fromRectXY(
       Rect.fromCenter(center: at, width: _A.whistleSize.width, height: _A.whistleSize.height),
       0.03,
@@ -25,10 +30,10 @@ class DashGear(final DashInk _ink) {
     _ink.fill(canvas, Path()..addRRect(body), look.metal);
   }
 
-  void clock(Canvas canvas, DashLook look, DashFacing facing) {
+  void clock(Canvas canvas, PipitLook look, PipitFacing facing) {
     final at = switch (facing) {
-      DashFacing.left => _A.sideClock,
-      DashFacing.back => _A.clock.scale(-1, 1),
+      PipitFacing.left => _A.sideClock,
+      PipitFacing.back => _A.clock.scale(-1, 1),
       _ => _A.clock,
     };
     for (final side in const [-1.0, 1.0]) {
@@ -47,9 +52,9 @@ class DashGear(final DashInk _ink) {
     _ink.line(canvas, at, at.translate(_A.clockRadius * 0.4, 0), look.pupil, 0.02, look);
   }
 
-  void bag(Canvas canvas, DashLook look, DashFacing facing) {
-    final mirror = facing == DashFacing.back ? -1.0 : 1.0;
-    final side = facing == DashFacing.left;
+  void bag(Canvas canvas, PipitLook look, PipitFacing facing) {
+    final mirror = facing == PipitFacing.back ? -1.0 : 1.0;
+    final side = facing == PipitFacing.left;
     final bag = side ? _A.sideBag : _mirrored(_A.bag, mirror);
     final from = side ? _A.sideStrapFrom : _A.strapFrom.scale(mirror, 1);
     _ink.line(canvas, from, bag.topCenter, look.leather, _A.strapWidth, look);

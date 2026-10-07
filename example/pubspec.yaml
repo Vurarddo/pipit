@@ -1,5 +1,5 @@
-name: dash_bird_example
-description: "Shows what the dash_bird package can draw."
+name: pipit_example
+description: "Shows what the pipit package can draw."
 publish_to: "none"
 version: 1.0.0+1
 
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dash_bird:
+  pipit:
     path: ../
 
 dev_dependencies:

@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 
-import 'package:dash_bird/src/dash_motion.dart';
+import 'package:pipit/src/pipit_motion.dart';
 
 /// Short reactions laid over a bird's motion: a hop with a flutter when the
 /// pointer arrives, a squash when it is tapped. Each is a start time on the
 /// stage's clock, so painting stays a pure function of the time.
-class DashReactions {
+class PipitReactions {
   double? _hopAt;
   double? _squashAt;
 
@@ -20,14 +20,14 @@ class DashReactions {
 
   void squash(double now) => _squashAt = now;
 
-  DashMotion apply(DashMotion m, double seconds) {
+  PipitMotion apply(PipitMotion m, double seconds) {
     final hop = _progress(_hopAt, seconds, _hopTime);
     final squash = _progress(_squashAt, seconds, _squashTime);
     if (hop == null && squash == null) return m;
     final rise = hop == null ? 0.0 : math.sin(math.pi * hop);
     final flutter = hop == null ? 0.0 : (math.sin(hop * math.pi * 6)).abs() * (1 - hop);
     final dip = squash == null ? 0.0 : math.sin(math.pi * squash) * (1 - squash);
-    return DashMotion(
+    return PipitMotion(
       breath: m.breath,
       eyeOpen: m.eyeOpen,
       wing: m.wing + _hopFlutter * flutter,

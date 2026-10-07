@@ -2,12 +2,12 @@ import 'dart:math' as math;
 
 import 'package:flutter/painting.dart';
 
-import 'package:dash_bird/src/stable_hash.dart';
+import 'package:pipit/src/stable_hash.dart';
 
 /// Everything that moves a bird at one moment, in body units and radians,
 /// applied by the views to the rest pose: idle life (breath, blinks, a wing
 /// sway) and the pose and expression on top of it.
-class const DashMotion({
+class const PipitMotion({
   final double breath = 0,
   final double eyeOpen = 1,
   final double wing = 0,
@@ -22,12 +22,12 @@ class const DashMotion({
   final double tuft = 0,
   final double squash = 0,
 }) {
-  static const rest = DashMotion();
+  static const rest = PipitMotion();
 }
 
 /// Idle life of one bird, derived only from its id and the time, so the same
 /// bird looks the same at the same second in every run, preview and golden.
-class DashIdle(String id) {
+class PipitIdle(String id) {
   this
     : _seed = StableHash.seed(id),
       _phase = StableHash.unit(StableHash.seed(id), 1) * 2 * math.pi,
@@ -53,10 +53,10 @@ class DashIdle(String id) {
   // bird so that two birds drift apart, at a jittered point in the slot.
   static const double _blink = 0.14;
 
-  DashMotion at(double seconds) {
+  PipitMotion at(double seconds) {
     final drift = 0.8 * math.sin(seconds * _driftRate + _driftPhase);
     final breath = math.sin(seconds * _breathRate + _phase + drift);
-    return DashMotion(
+    return PipitMotion(
       breath: breath,
       eyeOpen: _eyeOpen(seconds),
       wing: 0.05 * math.sin(seconds * _breathRate * 0.5 + _phase * 1.3) + _twitch(seconds),

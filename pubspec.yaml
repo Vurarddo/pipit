@@ -1,18 +1,18 @@
-name: dash_bird
+name: pipit
 description: >-
-  Dash, a hand-drawn bird widget that breathes, blinks, follows the pointer and
+  Pipit, a hand-drawn bird widget that breathes, blinks, follows the pointer and
   changes pose on a spring. Drawn on a canvas, with no assets or dependencies.
 version: 0.1.0
-repository: https://github.com/Vurarddo/dash_bird
-issue_tracker: https://github.com/Vurarddo/dash_bird/issues
+repository: https://github.com/Vurarddo/pipit
+issue_tracker: https://github.com/Vurarddo/pipit/issues
 topics:
   - widget
   - animation
   - mascot
   - canvas
 screenshots:
-  - description: Dash in every pose and accessory, on light and dark.
-    path: doc/dash_bird.png
+  - description: Pipit in every pose and accessory, on light and dark.
+    path: doc/pipit.png
 
 environment:
   sdk: ^3.13.0

@@ -1,11 +1,11 @@
-# dash_bird
+# pipit
 
-Dash is a small hand-drawn bird for Flutter. It breathes, blinks, looks at the
+Pipit is a small hand-drawn bird for Flutter. It breathes, blinks, looks at the
 pointer, hops when the pointer arrives and squashes when tapped. Everything is
 drawn on a canvas: no images, no Rive or Lottie files, no dependencies beyond
 Flutter.
 
-![Dash in every pose and accessory, on light and dark](https://raw.githubusercontent.com/Vurarddo/dash_bird/main/doc/dash_bird.png)
+![Pipit in every pose and accessory, on light and dark](https://raw.githubusercontent.com/Vurarddo/pipit/main/doc/pipit.png)
 
 - Seven poses (`sitting`, `standing`, `walking`, `flying`, `sleeping`,
   `working`, `alert`); a change of pose is a spring from wherever the bird is.
@@ -19,28 +19,28 @@ Flutter.
 
 ```yaml
 dependencies:
-  dash_bird: ^0.1.0
+  pipit: ^0.1.0
 ```
 
 The package needs Dart 3.13 or newer.
 
 ## One bird
 
-A `DashStage` is the clock. Every bird below it reads the same `seconds`, and
+A `PipitStage` is the clock. Every bird below it reads the same `seconds`, and
 a frame repaints the birds without rebuilding a widget.
 
 ```dart
-import 'package:dash_bird/dash_bird.dart';
+import 'package:pipit/pipit.dart';
 
-DashStage(
-  builder: (context, seconds) => DashView(
+PipitStage(
+  builder: (context, seconds) => PipitView(
     id: 'robin',
-    look: DashLook.of('robin', palette: DashPalette.of(context)),
+    look: PipitLook.of('robin', palette: PipitPalette.of(context)),
     semanticLabel: 'Robin the bird',
     seconds: seconds,
     size: 120,
-    pose: DashPose.working,
-    accessory: DashAccessory.headband,
+    pose: PipitPose.working,
+    accessory: PipitAccessory.headband,
     onTap: () {},
   ),
 )
@@ -51,35 +51,35 @@ Without `seconds` a bird is a still picture.
 
 ### Colours
 
-A `DashLook` is the twelve colours of one bird. You rarely name them all:
+A `PipitLook` is the twelve colours of one bird. You rarely name them all:
 
 ```dart
 // One body colour; wing, eye mask and outline follow it.
-DashLook.fromBody(Colors.teal, palette: DashPalette.of(context));
+PipitLook.fromBody(Colors.teal, palette: PipitPalette.of(context));
 
 // A body picked from the palette by the bird's id, always the same one.
-DashLook.of('robin', palette: DashPalette.of(context));
+PipitLook.of('robin', palette: PipitPalette.of(context));
 ```
 
-`DashPalette.of(context)` follows the theme's brightness. To change the shared
+`PipitPalette.of(context)` follows the theme's brightness. To change the shared
 colours (belly, beak, eyes, the gold of the crown), add your own palette to
 the theme:
 
 ```dart
 ThemeData(
-  extensions: [DashPalette.light.copyWith(belly: const Color(0xFFFFF7E0))],
+  extensions: [PipitPalette.light.copyWith(belly: const Color(0xFFFFF7E0))],
 )
 ```
 
 ### Expression
 
 ```dart
-DashView(
+PipitView(
   // ...
-  expression: const DashExpression(
+  expression: const PipitExpression(
     mood: 1,              // -1 worried, 0 calm, 1 happy
     look: Offset(-1, 0),  // where the eyes point, each axis -1..1
-    eyes: DashEyes.open,  // or blinking, closed
+    eyes: PipitEyes.open,  // or blinking, closed
   ),
 )
 ```

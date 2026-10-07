@@ -1,0 +1,28 @@
+name: dash_bird
+description: >-
+  Dash, a hand-drawn bird widget that breathes, blinks, follows the pointer and
+  changes pose on a spring. Draws one bird or a flock of thousands in one canvas.
+version: 0.1.0
+repository: https://github.com/Vurarddo/dash_bird
+issue_tracker: https://github.com/Vurarddo/dash_bird/issues
+topics:
+  - widget
+  - animation
+  - mascot
+  - canvas
+screenshots:
+  - description: Dash in every pose and accessory, on light and dark.
+    path: doc/dash_bird.png
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0

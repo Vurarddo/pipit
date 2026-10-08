@@ -9,5 +9,6 @@ export 'src/pipit_facing.dart';
 export 'src/pipit_look.dart';
 export 'src/pipit_palette.dart';
 export 'src/pipit_pose.dart' show PipitPose;
+export 'src/pipit_reactions.dart' show PipitReaction;
 export 'src/pipit_stage.dart';
 export 'src/pipit_view.dart';

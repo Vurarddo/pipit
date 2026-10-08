@@ -8,6 +8,7 @@
 ## 1. Package Layout
 
 ```text
+packages/pipit/
 lib/
 ├── pipit.dart                 # The barrel: the whole public API, nothing else
 └── src/                       # Private implementation, one concern per file
@@ -25,6 +26,9 @@ lib/
 example/lib/main.dart          # The pub.dev example: every pose, accessory and facing
 test/                          # Widget and pure-Dart tests, one file per concern
 tool/screenshot_test.dart      # Draws doc/pipit.png for the README
+
+packages/pipit_sounds/         # Sibling package: PipitSound, PipitSoundPlayer, assets/sounds (generator lives outside the repo)
+(repository root)              # .gitignore, .claude/, a README that points at both packages; no pubspec
 ```
 
 - **One concern per file.** A file holds one widget, one painter, one value type or one closely related set of enums. When a painter outgrows ~150 lines, split by body part or by facing, not by "helpers".

@@ -13,12 +13,12 @@ metadata:
 2. **Pre-Push Quality Gate, every time, in order:**
    - `dart format --output=none --set-exit-if-changed .`
    - `dart analyze --fatal-infos`
-   - `flutter test`
+   - `flutter test` in `packages/pipit` and in `packages/pipit_sounds`
    Any failure aborts the push until fixed and re-verified.
 3. **Never force-push `main`.** `--force-with-lease` is allowed only on your own short-lived branch after a rebase.
 4. **Never commit secrets or build output.** `pubspec.lock` is ignored on purpose (a library does not pin); `build/`, `.dart_tool/` and `CLAUDE.local.md` stay ignored.
 5. **Linear history.** Rebase a branch onto `origin/main` before merging; no merge commits from `main` into a branch.
-6. **A release is a tag plus a publish.** `vX.Y.Z` on `main` matches `pubspec.yaml` and the top of `CHANGELOG.md`.
+6. **A release is a tag plus a publish.** `<package>-vX.Y.Z` on `main` matches `pubspec.yaml` and the top of `CHANGELOG.md`.
 
 ---
 
@@ -70,7 +70,7 @@ flutter test
 
 ### Step 3: Commit with Conventional Commits
 ```bash
-git add lib/src/pipit_pose.dart test/pipit_pose_test.dart
+git add packages/pipit/lib/src/pipit_pose.dart packages/pipit/test/pipit_pose_test.dart
 git commit -m "feat(pose): add the sleeping pose"
 ```
 
@@ -82,7 +82,7 @@ git rebase origin/main
 
 ### Step 5: Gate, then push only on instruction
 ```bash
-dart format --output=none --set-exit-if-changed . && dart analyze --fatal-infos && flutter test
+dart format --output=none --set-exit-if-changed . && dart analyze --fatal-infos && (cd packages/pipit && flutter test) && (cd packages/pipit_sounds && flutter test)
 git push -u origin feat/<short-name>   # only after the user says push
 ```
 
@@ -90,7 +90,7 @@ git push -u origin feat/<short-name>   # only after the user says push
 1. Bump `version:` in `pubspec.yaml`; add the entry at the top of `CHANGELOG.md`; update the `^` constraint in the README install snippet.
 2. If anything visible changed: `flutter test tool/screenshot_test.dart --update-goldens` and look at `doc/pipit.png`.
 3. `dart pub publish --dry-run` must be clean.
-4. `git commit -m "chore(release): X.Y.Z"`, `git tag vX.Y.Z`, then push with tags and `dart pub publish` when told to.
+4. `git commit -m "chore(release): X.Y.Z"`, `git tag <package>-vX.Y.Z`, then push with tags and `dart pub publish` when told to.
 
 ---
 

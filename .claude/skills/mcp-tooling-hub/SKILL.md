@@ -11,7 +11,7 @@ metadata:
 
 Pipit has no `.mcp.json`. The only server in use is **`dart`** (`dart mcp-server`), registered in the developer's user scope (`~/.claude.json`, `claude mcp add --scope user`). A fresh clone therefore has no project servers to approve; if `mcp__dart__*` tools are missing, the server is not registered on this machine and the CLI commands below are the fallback.
 
-Registration is not availability: a tool that needs a running app (`hot_reload`, `widget_inspector`, `get_runtime_errors`) only works while the example is running, and the example is the only thing that runs (`cd example && flutter run -d chrome`).
+Registration is not availability: a tool that needs a running app (`hot_reload`, `widget_inspector`, `get_runtime_errors`) only works while the example is running, and the example is the only thing that runs (`cd packages/pipit/example && flutter run -d chrome`).
 
 ```mermaid
 graph TD

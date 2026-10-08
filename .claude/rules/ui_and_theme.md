@@ -1,9 +1,11 @@
 ---
 paths:
-  - "lib/**"
-  - "example/lib/**"
-  - "tool/**"
-  - "test/**"
+  - "packages/pipit/lib/**"
+  - "packages/pipit/example/lib/**"
+  - "packages/pipit/tool/**"
+  - "packages/pipit/test/**"
+  - "packages/pipit_sounds/lib/**"
+  - "packages/pipit_sounds/example/lib/**"
 ---
 # Painting, Palette, Motion & Widget Standards
 

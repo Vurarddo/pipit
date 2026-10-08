@@ -10,7 +10,7 @@
 - **Lints:** `package:flutter_lints/flutter.yaml`, nothing custom. Do not add lint packages (Law 1).
 - **Page width:** 100 characters.
 - **Trailing commas:** preserved (`trailing_commas: preserve`), so a short constructor call stays on one line and a long one keeps its comma.
-- **Analysis must be silent:** `dart analyze --fatal-infos` reports nothing. The example app has its own `analysis_options.yaml` and is analysed separately from `example/`.
+- **Analysis must be silent:** `dart analyze --fatal-infos` reports nothing. Each package and each example has its own `analysis_options.yaml`; `dart analyze` from the repository root walks all of them.
 - **pub.dev score:** the package is published, so `dart pub publish --dry-run` must pass with no warnings: every exported member documented, `CHANGELOG.md` current, `README.md` example compiling.
 
 ---
@@ -19,12 +19,12 @@
 
 - **Explicit User Consent Required:** AI agents MUST NEVER run `git push` or `dart pub publish` unless the user gives direct, explicit instruction (e.g., "запуш", "push", "опублікуй", "publish"). Staging and local commits (`git add`, `git commit`) can be done as requested.
 - **Mandatory 3-Step Pre-Push Quality Gate:** Even upon explicit push instruction, the agent MUST ALWAYS execute and verify this sequence BEFORE `git push`:
-  1. `dart format --output=none --set-exit-if-changed .` (formatting compliance; covers `lib`, `test`, `tool` and `example`)
-  2. `dart analyze --fatal-infos` (zero errors, warnings, or infos)
-  3. `flutter test` (100% pass rate; `tool/screenshot_test.dart` is excluded by its location)
+  1. `dart format --output=none --set-exit-if-changed .` from the repository root (covers both packages, their tests, tools and examples)
+  2. `dart analyze --fatal-infos` from the repository root (zero errors, warnings, or infos in every package)
+  3. `flutter test` inside `packages/pipit` and inside `packages/pipit_sounds` (100% pass rate; `tool/screenshot_test.dart` is excluded by its location)
 
   *If ANY check fails, the push MUST be aborted, the issue resolved, and checks re-verified before pushing.*
-- **Release gate (before `dart pub publish`):** the 3-step gate, then `dart pub publish --dry-run`, then `flutter test tool/screenshot_test.dart --update-goldens` if anything visible changed, so `doc/pipit.png` matches the release. The version in `pubspec.yaml`, the top entry of `CHANGELOG.md`, the `^` constraint in the README install snippet, and the git tag `vX.Y.Z` must agree.
+- **Release gate (before `dart pub publish`, run inside the package being released):** the 3-step gate, then `dart pub publish --dry-run`, then `flutter test tool/screenshot_test.dart --update-goldens` if anything visible changed, so `doc/pipit.png` matches the release. The version in `pubspec.yaml`, the top entry of `CHANGELOG.md`, the `^` constraint in the README install snippet, and the git tag `<package>-vX.Y.Z` (`pipit-v0.2.0`, `pipit_sounds-v0.1.0`) must agree.
 - **Branches:** `main` is the only long-lived branch and is published from. Work on short-lived `feat/…`, `fix/…` branches and merge with a linear history. There is no `develop` and no release branch.
 
 ---

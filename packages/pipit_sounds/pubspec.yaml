@@ -1,0 +1,36 @@
+name: pipit_sounds
+description: >-
+  Sounds for the Pipit bird: a chirp for every pose, a hop and a squash, all
+  synthesised to match its motion, with a small player to wire them up.
+version: 0.1.0
+repository: https://github.com/Vurarddo/pipit/tree/main/packages/pipit_sounds
+issue_tracker: https://github.com/Vurarddo/pipit/issues
+topics:
+  - audio
+  - mascot
+  - animation
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+dependencies:
+  audioplayers: ^6.8.1
+  flutter:
+    sdk: flutter
+  pipit: ^0.2.0
+
+# Until pipit 0.2.0 is on pub.dev the sibling checkout is used; pub ignores
+# overrides for consumers of this package.
+dependency_overrides:
+  pipit:
+    path: ../pipit
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  assets:
+    - assets/sounds/

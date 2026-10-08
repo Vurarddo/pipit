@@ -2,8 +2,8 @@ name: pipit
 description: >-
   Pipit, a hand-drawn bird widget that breathes, blinks, follows the pointer and
   changes pose on a spring. Drawn on a canvas, with no assets or dependencies.
-version: 0.1.0
-repository: https://github.com/Vurarddo/pipit
+version: 0.2.0
+repository: https://github.com/Vurarddo/pipit/tree/main/packages/pipit
 issue_tracker: https://github.com/Vurarddo/pipit/issues
 topics:
   - widget

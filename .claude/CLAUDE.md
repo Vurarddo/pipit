@@ -2,7 +2,7 @@
 
 Project instructions for this repository (`.claude/CLAUDE.md`). Detailed rules live in `.claude/rules/` (auto-loaded, some scoped by `paths:`), and on-demand knowledge lives in `.claude/skills/` (auto-selected by their `description`).
 
-Pipit is a **pub.dev package**: one hand-drawn bird widget (`PipitView`) and its clock (`PipitStage`), painted on a canvas with no assets and no dependencies beyond Flutter. There is no app here, no backend, no network, no state-management framework. Every rule below is written for a library whose users are other Flutter developers.
+Pipit is a **pub.dev package**: one hand-drawn bird widget (`PipitView`) and its clock (`PipitStage`), painted on a canvas with no assets and no dependencies beyond Flutter. The repository is a small monorepo: `packages/pipit` is the bird, and a second package, `packages/pipit_sounds`, gives the bird a voice (WAV assets synthesised by a script kept outside the repository, played through `audioplayers`); it is the only place a dependency or an asset may live. There is no app here, no backend, no network, no state-management framework. Every rule below is written for libraries whose users are other Flutter developers.
 
 ## 1. Communication & Language
 
@@ -22,7 +22,7 @@ These seven laws always apply. Each one is stated here in full and elaborated in
 
 | # | Law | Detail |
 | :-- | :--- | :--- |
-| 1 | **Zero Dependencies.** `pubspec.yaml` depends on `flutter` only; dev dependencies are `flutter_test` and `flutter_lints`. No package is added for code generation, animation, images, or testing. | [workspace_and_tools.md](rules/workspace_and_tools.md) |
+| 1 | **Zero Dependencies.** `pipit`'s `pubspec.yaml` depends on `flutter` only; dev dependencies are `flutter_test` and `flutter_lints`. No package is added for code generation, animation, images, or testing. `pipit_sounds` may depend on `pipit` and one audio plugin, nothing more. | [workspace_and_tools.md](rules/workspace_and_tools.md) |
 | 2 | **One Barrel, Private Internals.** `lib/pipit.dart` is the only public entry; everything under `lib/src/` is private unless the barrel exports it. The public surface is small, documented, and changed only with a `CHANGELOG.md` entry. | [architecture.md](rules/architecture.md) |
 | 3 | **Colours Come From the Palette.** Painting code receives resolved `Color`s from `PipitLook`, which is built from `PipitPalette` (a `ThemeExtension`). The only `Color(0x…)` literals in `lib/` are the two palette constants. | [ui_and_theme.md](rules/ui_and_theme.md) |
 | 4 | **Deterministic Painting.** A painter reads no clock, `Random()` or `DateTime.now()`; time and seed come in as arguments, so goldens and tests are stable. Nothing is allocated per frame. | [ui_and_theme.md](rules/ui_and_theme.md) |
@@ -43,7 +43,7 @@ Loaded automatically by Claude Code. Rules with `paths:` frontmatter load only w
 | [architecture.md](rules/architecture.md) | Package layout, public API surface, `lib/src/` structure, constructors and imports. | always |
 | [quality_and_git.md](rules/quality_and_git.md) | Formatting, analysis, doc-comment hygiene, Git push policy, Pre-Push Quality Gate, releases. | always |
 | [workspace_and_tools.md](rules/workspace_and_tools.md) | Zero-dependency invariant, the example app, screenshot tool, stale pointer policy. | always |
-| [ui_and_theme.md](rules/ui_and_theme.md) | Painting, palette, motion, accessibility, size limits. | `lib/**`, `example/lib/**`, `tool/**`, `test/**` |
+| [ui_and_theme.md](rules/ui_and_theme.md) | Painting, palette, motion, accessibility, size limits. | `packages/pipit/{lib,example/lib,tool,test}/**` |
 
 ---
 
@@ -53,7 +53,7 @@ Loaded automatically by Claude Code. Rules with `paths:` frontmatter load only w
 - **Hubs (entry points per domain):** `flutter-ui-hub` (painting, motion, widgets), `performance-hub` (frame cost), `testing-hub` (widget and golden tests), `git-workflow-hub` (commits, gate, releases), `mcp-tooling-hub` (Dart MCP server). Each hub links to its leaf skills.
 - **Commands:** `.claude/commands/v-*.md` — `/v-audit-skills`, `/v-delete-skill`, `/v-session-handoff`, `/v-skill-creator`.
 - **MCP servers:** only `dart` (user scope, `~/.claude.json`); no project `.mcp.json`. After Dart/Flutter changes in a running example, hot reload/restart via the Dart MCP tools.
-- **Running the package:** there is no app to run; the example lives in `example/` (web only is checked in) and the README picture is drawn by `flutter test tool/screenshot_test.dart --update-goldens`.
+- **Running the package:** there is no app to run; each package has an `example/` (web only is checked in) and the README picture is drawn from `packages/pipit` by `flutter test tool/screenshot_test.dart --update-goldens`. Commands run from the package directory (`packages/pipit`, `packages/pipit_sounds`); `dart analyze` from the repository root covers all of them.
 
 ---
 

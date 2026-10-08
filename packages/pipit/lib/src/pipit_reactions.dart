@@ -2,6 +2,11 @@ import 'dart:math' as math;
 
 import 'package:pipit/src/pipit_motion.dart';
 
+/// The short moves a bird makes on its own: a hop when the pointer arrives, a
+/// squash when it is tapped. Reported through `PipitView.onReaction`, so a host
+/// can answer with a sound.
+enum PipitReaction { hop, squash }
+
 /// Short reactions laid over a bird's motion: a hop with a flutter when the
 /// pointer arrives, a squash when it is tapped. Each is a start time on the
 /// stage's clock, so painting stays a pure function of the time.

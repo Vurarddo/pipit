@@ -4,8 +4,14 @@
     {
       "name": "example",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "cd example && flutter run -d web-server --web-port 8765"],
+      "runtimeArgs": ["-c", "cd packages/pipit/example && flutter run -d web-server --web-port 8765"],
       "port": 8765
+    },
+    {
+      "name": "sounds",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd packages/pipit_sounds/example && flutter run -d web-server --web-port 8766"],
+      "port": 8766
     }
   ]
 }

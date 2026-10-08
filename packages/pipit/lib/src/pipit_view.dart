@@ -17,7 +17,7 @@ import 'package:pipit/src/pipit_stage.dart';
 /// `null` for a bird at rest. A new [pose] or [expression] is reached along
 /// a spring from wherever the bird is, never by a cut. On a stage the bird
 /// looks at the pointer and hops when it arrives; with [onTap] it squashes
-/// when tapped.
+/// when tapped. [onReaction] reports each hop and squash as it starts.
 class const PipitView({
   super.key,
   required final String id,
@@ -30,6 +30,7 @@ class const PipitView({
   final PipitPose pose = PipitPose.standing,
   final PipitExpression expression = PipitExpression.calm,
   final VoidCallback? onTap,
+  final ValueChanged<PipitReaction>? onReaction,
 }) extends StatefulWidget {
   @override
   State<PipitView> createState() => _PipitViewState();
@@ -94,6 +95,16 @@ class _PipitViewState extends State<PipitView> {
     _transition.retarget(_target(), _now);
   }
 
+  void _react(PipitReaction reaction) {
+    switch (reaction) {
+      case PipitReaction.hop:
+        _reactions.hop(_now);
+      case PipitReaction.squash:
+        _reactions.squash(_now);
+    }
+    widget.onReaction?.call(reaction);
+  }
+
   @override
   Widget build(BuildContext context) {
     final tappable = widget.onTap != null;
@@ -103,11 +114,11 @@ class _PipitViewState extends State<PipitView> {
       button: tappable,
       child: MouseRegion(
         cursor: tappable ? SystemMouseCursors.click : MouseCursor.defer,
-        onEnter: (_) => _reactions.hop(_now),
+        onEnter: (_) => _react(PipitReaction.hop),
         child: GestureDetector(
           onTap: tappable
               ? () {
-                  _reactions.squash(_now);
+                  _react(PipitReaction.squash);
                   widget.onTap!();
                 }
               : null,

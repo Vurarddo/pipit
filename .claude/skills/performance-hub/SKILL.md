@@ -36,7 +36,7 @@ graph TD
 
 ## 3. Profiling
 
-1. **Profile mode, real device or Chrome.** `cd example && flutter run --profile -d chrome` (or a device). Debug mode numbers are meaningless for paint cost.
+1. **Profile mode, real device or Chrome.** `cd packages/pipit/example && flutter run --profile -d chrome` (or a device). Debug mode numbers are meaningless for paint cost.
 2. **DevTools Performance tab:** the raster bar is the painter; the UI bar is builds. Enable "Track widget rebuilds" to confirm that a frame rebuilds no widget (only repaints).
 3. **Repaint rainbow / `debugRepaintRainbowEnabled`:** every bird should flash on its own; a flashing parent means a missing `RepaintBoundary` or a `setState` leak.
 4. **Dart MCP `vm_service`** gives frame timings without leaving the editor; see [mcp-tooling-hub](../mcp-tooling-hub/SKILL.md).

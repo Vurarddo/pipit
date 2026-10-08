@@ -20,12 +20,6 @@ dependencies:
     sdk: flutter
   pipit: ^0.2.0
 
-# Until pipit 0.2.0 is on pub.dev the sibling checkout is used; pub ignores
-# overrides for consumers of this package.
-dependency_overrides:
-  pipit:
-    path: ../pipit
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -302,9 +302,10 @@ packages:
   pipit:
     dependency: "direct main"
     description:
-      path: "../../pipit"
-      relative: true
-    source: path
+      name: pipit
+      sha256: d91dfe80f87817822b524be4261332c639fd7fa7afc330850ba0bb20e6ecf8db
+      url: "https://pub.dev"
+    source: hosted
     version: "0.2.0"
   pipit_sounds:
     dependency: "direct main"
